@@ -55,6 +55,7 @@ function Application () {
         debugDraw.SetFlags(b2DebugDraw.e_shapeBit | b2DebugDraw.e_jointBit)
     //this.world.SetDebugDraw(debugDraw);
     
+    this.announcedWinner = false;
     this.leftScore = 0;
     this.rightScore = 0;
     $(".leftScore").text("0");    
@@ -104,6 +105,16 @@ Application.inherit(cc.Layer, {
         } else if (winner == "right") {
             this.rightScore += 1;
         }
+        
+        if (!this.announcedWinner) {
+            if (this.leftScore >= 15 || this.rightScore >= 15) {
+                this.announcedWinner = true;
+                alert(winner + " scores 15 goals and wins the game.");
+                $(".winMessage").text(winner + " wins!");
+                $(".winMessage").show("slow");
+            }
+        }
+        
         $(".leftScore").text(this.leftScore);    
         $(".rightScore").text(this.rightScore);
     },
