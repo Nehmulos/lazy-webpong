@@ -53,7 +53,7 @@ function Application () {
         debugDraw.SetFillAlpha(0.5)
         debugDraw.SetLineThickness(1.0)
         debugDraw.SetFlags(b2DebugDraw.e_shapeBit | b2DebugDraw.e_jointBit)
-    this.world.SetDebugDraw(debugDraw);
+    //this.world.SetDebugDraw(debugDraw);
 }
 
 Application.inherit(cc.Layer, {
@@ -77,9 +77,9 @@ Application.inherit(cc.Layer, {
     createExampleGame: function() {
         var s = cc.Director.sharedDirector.winSize;
         
-        this.left = new Bar();
-        this.right = new Bar();
+        this.left = new PlayerBar();
         this.ball = new Ball();
+        this.right = new CpuBar(this.left, this.ball);
         
         this.left.position = new cc.Point(20, (this.left.contentSize.height+s.height) / 2);
         this.right.position = new cc.Point(s.width - 20, (this.right.contentSize.height+s.height) / 2);
@@ -99,11 +99,25 @@ Application.inherit(cc.Layer, {
         this.topWall = new PhysicsNode();
         this.bottomWall = new PhysicsNode();
         
+        this.topWall.position = new cc.Point(s.width/2, s.height);
+        this.bottomWall.position = new cc.Point(s.width/2, 0);
+        this.topWall.contentSize = new cc.Size(s.width, 20);
+        this.bottomWall.contentSize = new cc.Size(s.width, 20);
+        
+        this.topWall.createPhysics(this.world, {isStatic: true, restitution: 1});
+        this.bottomWall.createPhysics(this.world, {isStatic: true, restitution: 1});
+        
         this.leftGoal = new Goal(-5, s.height);
         this.rightGoal = new Goal(s.width + 5, s.height);
         
         this.leftGoal.createDefaultPhysics(this.world);
         this.rightGoal.createDefaultPhysics(this.world);
+        
+        
+        this.left.topLimit = s.height - this.left.contentSize.height/2 - this.topWall.contentSize.height/2;
+        this.right.topLimit = s.height - this.right.contentSize.height/2 - this.topWall.contentSize.height/2;
+        this.left.bottomLimit = this.left.contentSize.height/2 + this.topWall.contentSize.height/2;
+        this.right.bottomLimit = this.right.contentSize.height/2 + this.topWall.contentSize.height/2;
     },
     
     // Here's the application's mainloop    
@@ -172,7 +186,7 @@ Application.inherit(cc.Layer, {
 $(function() {
 
     var director = cc.Director.sharedDirector
-    director.backgroundColor = "rgb(200,200,200)"
+    director.backgroundColor = "rgb(0,0,0)"
     director.attachInView(document.getElementById('cocos2d-demo'))
     director.displayFPS = true
     

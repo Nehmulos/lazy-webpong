@@ -88,8 +88,8 @@ PhysicsNode.inherit(cc.Node, {
 
         var fixDef = new b2FixtureDef();
         fixDef.density = args.density ? args.density : (args.isStatic ? 0.0 : 1.0);
-        fixDef.friction = args.friction ? args.friction : 0.1;
-        fixDef.restitution = args.restitution ? args.restitution : 0.1;
+        fixDef.friction = args.friction ? args.friction : 0;
+        fixDef.restitution = args.restitution ? args.restitution : 1;
         fixDef.isSensor = args.isSensor ? args.isSensor : false;
         
         var boundingBox = args.boundingBox ? 
