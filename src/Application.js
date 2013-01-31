@@ -36,7 +36,7 @@ function Application () {
     debugCanvas.width = $(debugCanvas).parent().width();
     debugCanvas.height = $(debugCanvas).parent().height();
     
-    this.world = new b2World(new b2Vec2(0, -10), true);
+    this.world = new b2World(new b2Vec2(0, 0), true);
     this.world.SetContactListener(new CollisionHandler());
     
     /*
@@ -75,43 +75,35 @@ Application.inherit(cc.Layer, {
 
     // Example setup replace it with your own
     createExampleGame: function() {
-        var box = new PhysicsNode();
-        box.type = "box"; // used in CollisionHandler
-        box.position = new cc.Point(400, 400);
-        box.rotation = 25;
-        box.createPhysics(this.world, {boundingBox: new cc.Size(50, 50)});
-        this.addChild(box);
+        var s = cc.Director.sharedDirector.winSize;
         
-        var ground = new PhysicsNode();
-        ground.type = "ground";
-        ground.position = new cc.Point(400, 200);
-        ground.createPhysics(this.world, {boundingBox: new cc.Size(400, 10)});
+        this.left = new Bar();
+        this.right = new Bar();
+        this.ball = new Ball();
         
-        var jointDef = new b2RevoluteJointDef();
-        jointDef.Initialize(ground.body, this.world.GetGroundBody(), ground.body.GetPosition());
-        jointDef.MaximalForce = 4000;
+        this.left.position = new cc.Point(20, (this.left.contentSize.height+s.height) / 2);
+        this.right.position = new cc.Point(s.width - 20, (this.right.contentSize.height+s.height) / 2);
+        this.ball.position = new cc.Point((this.ball.contentSize.width+s.width)/2, (this.ball.contentSize.height+s.height) / 2);
         
-        ground.joint = this.world.CreateJoint(jointDef);
+        this.left.createDefaultPhysics(this.world);
+        this.right.createDefaultPhysics(this.world);
+        this.ball.createDefaultPhysics(this.world);
         
-        // set image. It must be listed in the preloader before.
-        ground.addChild(new cc.Sprite({
-            file: "images/ground.png"
-        }));
-        this.addChild(ground);
+        this.addChild(this.left);
+        this.addChild(this.right);
+        this.addChild(this.ball);
         
-        // called in update loop
-        ground.update = function() {
-            PhysicsNode.prototype.update.call(this);
-            
-            if (Input.instance.keysDown[37]) { // left arrow   
-                this.body.ApplyTorque(200);
-            }
-            if (Input.instance.keysDown[39]) { // right arrow
-                this.body.ApplyTorque(-200);
-            }
-        }
+        this.ball.applyInitialImpulse(randomBoolean());
         
-        $(".instructions").append("use left / right arrow keys to rotate the ground");
+        // game map
+        this.topWall = new PhysicsNode();
+        this.bottomWall = new PhysicsNode();
+        
+        this.leftGoal = new Goal(-5, s.height);
+        this.rightGoal = new Goal(s.width + 5, s.height);
+        
+        this.leftGoal.createDefaultPhysics(this.world);
+        this.rightGoal.createDefaultPhysics(this.world);
     },
     
     // Here's the application's mainloop    
@@ -174,7 +166,7 @@ Application.inherit(cc.Layer, {
             this.onPhysicsUpdatedCallbacks.splice(0, 1);
         }
     }
-})
+});
 
 // this function is executed when the body is loaded
 $(function() {
@@ -201,7 +193,8 @@ $(function() {
     
     // list your images here
     // they will be loaded with the loadingscreen before your game starts
-    registerResource("images/ground.png", "image/png");
+    registerResource("images/ball.png", "image/png");
+    registerResource("images/bar.png", "image/png");
     
     
     function registerAudio(name) {
