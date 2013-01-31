@@ -7,3 +7,8 @@ TODO:
 - The Cpu paddle is horribly stupid, let it calculate the point of impact.
 - The movement should use onkeydown / onkeyup instead of this lazy ai-blocker
 - allow 2 player multiplayer
+
+License:
+See the LICENSE file. It applies the files written by myself. 
+Other licenses may apply to files created and edited by other authors.
+autotracker.py was not created by myself, it belongs to it's respective owners.
