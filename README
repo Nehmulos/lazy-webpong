@@ -1,6 +1,8 @@
 A lazy pong clone I created in about 2h for onegameamonth.org
 I spend most time struggleing with box2d.
 
+The CPU player is stupid, so the real challange are the retarded controls.
+
 TODO:
 - The Cpu paddle is horribly stupid, let it calculate the point of impact.
 - The movement should use onkeydown / onkeyup instead of this lazy ai-blocker
