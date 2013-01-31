@@ -6,12 +6,12 @@ PlayerBar.inherit(Bar, {
     update: function(dt) {
         PlayerBar.superclass.update.call(this, dt);
         
-        // w
-        if (Input.instance.keysDown[87]) {
+        // w || arrowup
+        if (Input.instance.keysDown[87] || Input.instance.keysDown[38]) {
             this.moveUp();
         }
-        // s
-        if (Input.instance.keysDown[83]) {
+        // s || arrowdown
+        if (Input.instance.keysDown[83] || Input.instance.keysDown[40]) {
             this.moveDown();
         }
     }
