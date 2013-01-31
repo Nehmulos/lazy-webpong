@@ -31,10 +31,10 @@ CollisionHandler.inherit(b2ContactListener, {
         
         // example collision, check for other collisions by coping this if block
         if (objectA && objectB) {
-            if (objectA.type == "box" && objectB.type == "ground") {
-                this.boxGroundCollision(objectA, objectB);
-            } else if(objectB.type == "box" && objectA.type == "ground") {
-                this.boxGroundCollision(objectB, objectA);
+            if (objectA.type == "ball" && objectB.type == "goal") {
+                this.ballGoalCollision(objectA, objectB);
+            } else if(objectB.type == "ball" && objectA.type == "goal") {
+                this.ballGoalCollision(objectB, objectA);
             }
         }
     },
@@ -71,8 +71,9 @@ CollisionHandler.inherit(b2ContactListener, {
     },
     
     // custom functions to handle the collision of 2 objects
-    boxGroundCollision: function(box, ground) {
-        console.log("The box touches the ground");  
+    ballGoalCollision: function(ball, goal) {
+        console.log("goal"); 
+        ball.destroyed = true; 
         Audiomanager.instance.play("blub");
     },
     

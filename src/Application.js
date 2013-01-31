@@ -72,28 +72,40 @@ Application.inherit(cc.Layer, {
     keyUp: function(event) {
         Input.instance.keysDown[event.keyCode] = false;
     },
+    
+    createBall: function() {
+        var s = cc.Director.sharedDirector.winSize;
+        var _this = this;
+    
+        this.ball = new Ball();
+        this.ball.position = new cc.Point((this.ball.contentSize.width+s.width)/2, (this.ball.contentSize.height+s.height) / 2);    
+        this.ball.createDefaultPhysics(this.world);
+        
+        this.addChild(this.ball);
+        
+        this.ball.applyInitialImpulse(randomBoolean());
+        
+        this.ball.onDestroy = function() {
+            _this.createBall();
+        }
+    },
 
     // Example setup replace it with your own
     createExampleGame: function() {
         var s = cc.Director.sharedDirector.winSize;
         
+        this.createBall(); 
         this.left = new PlayerBar();
-        this.ball = new Ball();
         this.right = new CpuBar(this.left, this.ball);
         
         this.left.position = new cc.Point(20, (this.left.contentSize.height+s.height) / 2);
         this.right.position = new cc.Point(s.width - 20, (this.right.contentSize.height+s.height) / 2);
-        this.ball.position = new cc.Point((this.ball.contentSize.width+s.width)/2, (this.ball.contentSize.height+s.height) / 2);
         
         this.left.createDefaultPhysics(this.world);
         this.right.createDefaultPhysics(this.world);
-        this.ball.createDefaultPhysics(this.world);
         
         this.addChild(this.left);
         this.addChild(this.right);
-        this.addChild(this.ball);
-        
-        this.ball.applyInitialImpulse(randomBoolean());
         
         // game map
         this.topWall = new PhysicsNode();

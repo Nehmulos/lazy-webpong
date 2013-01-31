@@ -40,6 +40,10 @@ PhysicsNode.inherit(cc.Node, {
     },
     
     destroy: function() {
+        if (this.onDestroy) {
+            this.onDestroy();
+        }
+    
         if (this.parent) {
             this.parent.removeChild(this);
         }

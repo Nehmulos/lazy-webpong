@@ -43,7 +43,7 @@ Bar.inherit(PhysicsNode, {
         if (currentSpeed < this.speed) {
             if (this.stoppedForMovements > 0) {
                 --this.stoppedForMovements;
-                if (this.stoppedForMovements == 0) {
+                if (this.canMoveUp() && this.stoppedForMovements == 0) {
                     this.body.SetLinearVelocity(new b2Vec2(0, this.speed));
                     this.body.SetAwake(true);
                 } else {
@@ -65,7 +65,7 @@ Bar.inherit(PhysicsNode, {
         if (currentSpeed > -this.speed) {
             if (this.stoppedForMovements > 0) {
                 --this.stoppedForMovements;
-                if (this.stoppedForMovements == 0) {
+                if (this.canMoveDown() && this.stoppedForMovements == 0) {
                     this.body.SetLinearVelocity(new b2Vec2(0, -this.speed));
                     this.body.SetAwake(true);
                 } else {
