@@ -1,10 +1,7 @@
-Html5 game base-application code
-I use this to create new games with cocos2d-javascript;
+A lazy pong clone I created in about 2h for onegameamonth.org
+I spend most time struggleing with box2d.
 
-providing:
--scene
--fixed update loop
--physic / graphic synchronization
--modified cocos2d for simple resource preloading;
--svg parsing utils
--some other utils and cool stuff
+TODO:
+- The Cpu paddle is horribly stupid, let it calculate the point of impact.
+- The movement should use onkeydown / onkeyup instead of this lazy ai-blocker
+- allow 2 player multiplayer

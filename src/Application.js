@@ -36,7 +36,7 @@ function Application () {
     debugCanvas.width = $(debugCanvas).parent().width();
     debugCanvas.height = $(debugCanvas).parent().height();
     
-    this.world = new b2World(new b2Vec2(0, 0), true);
+    this.world = new b2World(new b2Vec2(0, 0), false);
     this.world.SetContactListener(new CollisionHandler());
     
     /*
@@ -54,6 +54,11 @@ function Application () {
         debugDraw.SetLineThickness(1.0)
         debugDraw.SetFlags(b2DebugDraw.e_shapeBit | b2DebugDraw.e_jointBit)
     //this.world.SetDebugDraw(debugDraw);
+    
+    this.leftScore = 0;
+    this.rightScore = 0;
+    $(".leftScore").text("0");    
+    $(".rightScore").text("0");
 }
 
 Application.inherit(cc.Layer, {
@@ -88,6 +93,19 @@ Application.inherit(cc.Layer, {
         this.ball.onDestroy = function() {
             _this.createBall();
         }
+        if (this.right) {
+            this.right.ball = this.ball;
+        }
+    },
+    
+    gainScore: function(winner) {
+        if (winner == "left") {
+            this.leftScore += 1;
+        } else if (winner == "right") {
+            this.rightScore += 1;
+        }
+        $(".leftScore").text(this.leftScore);    
+        $(".rightScore").text(this.rightScore);
     },
 
     // Example setup replace it with your own
@@ -96,7 +114,7 @@ Application.inherit(cc.Layer, {
         
         this.createBall(); 
         this.left = new PlayerBar();
-        this.right = new CpuBar(this.left, this.ball);
+        this.right = new CpuBar(this.ball, this.left);
         
         this.left.position = new cc.Point(20, (this.left.contentSize.height+s.height) / 2);
         this.right.position = new cc.Point(s.width - 20, (this.right.contentSize.height+s.height) / 2);
@@ -119,8 +137,8 @@ Application.inherit(cc.Layer, {
         this.topWall.createPhysics(this.world, {isStatic: true, restitution: 1});
         this.bottomWall.createPhysics(this.world, {isStatic: true, restitution: 1});
         
-        this.leftGoal = new Goal(-5, s.height);
-        this.rightGoal = new Goal(s.width + 5, s.height);
+        this.leftGoal = new Goal(-5, s.height, "left");
+        this.rightGoal = new Goal(s.width + 5, s.height, "right");
         
         this.leftGoal.createDefaultPhysics(this.world);
         this.rightGoal.createDefaultPhysics(this.world);

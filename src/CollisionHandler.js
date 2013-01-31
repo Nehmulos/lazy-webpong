@@ -72,8 +72,11 @@ CollisionHandler.inherit(b2ContactListener, {
     
     // custom functions to handle the collision of 2 objects
     ballGoalCollision: function(ball, goal) {
-        console.log("goal"); 
-        ball.destroyed = true; 
+        var winner = goal.owner == "left" ? "right" : "left";
+        console.log("goal " + winner); 
+        ball.destroyed = true;
+        
+        Application.instance.gainScore(winner);
         Audiomanager.instance.play("blub");
     },
     
