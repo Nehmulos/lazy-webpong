@@ -107,9 +107,9 @@ Application.inherit(cc.Layer, {
         }
         
         if (!this.announcedWinner) {
-            if (this.leftScore >= 15 || this.rightScore >= 15) {
+            if (this.leftScore >= 5 || this.rightScore >= 5) {
                 this.announcedWinner = true;
-                alert(winner + " scores 15 goals and wins the game.");
+                alert(winner + " scores 5 goals and wins the game.");
                 $(".winMessage").text(winner + " wins!");
                 $(".winMessage").show("slow");
             }
